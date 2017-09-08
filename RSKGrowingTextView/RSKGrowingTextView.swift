@@ -178,6 +178,13 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             } else {
                 refreshHeightIfNeededAnimated(false)
             }
+            if centerText {
+                var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
+                topCorrection = max(0, topCorrection)
+                textContainerInset = UIEdgeInsets(top: topCorrection, left: leftInset, bottom: 0, right: rightInset)
+            } else {
+                textContainerInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+            }
         }
     }
     
@@ -206,13 +213,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     // MARK: - Helper Methods
     
     fileprivate func commonInitializer() {
-        if centerText {
-            var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
-            topCorrection = max(0, topCorrection)
-            contentInset = UIEdgeInsets(top: topCorrection, left: leftInset, bottom: 0, right: rightInset)
-        } else {
-            contentInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
-        }
         scrollsToTop = false
         showsVerticalScrollIndicator = false
         
