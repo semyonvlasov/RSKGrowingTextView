@@ -213,7 +213,13 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     // MARK: - Helper Methods
     
     fileprivate func commonInitializer() {
-        contentInset = UIEdgeInsetsMake(1.0, 0.0, 1.0, 0.0)
+        if centerText {
+            var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
+            topCorrection = max(0, topCorrection)
+            contentInset = UIEdgeInsets(top: topCorrection, left: leftInset, bottom: 0, right: rightInset)
+        } else {
+            contentInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+        }
         scrollsToTop = false
         showsVerticalScrollIndicator = false
         
