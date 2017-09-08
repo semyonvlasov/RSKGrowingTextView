@@ -72,9 +72,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     fileprivate weak var heightConstraint: NSLayoutConstraint?
     
-    fileprivate var maxHeight: CGFloat { return heightForNumberOfLines(maximumNumberOfLines) }
+    fileprivate var maxHeight: CGFloat { return max(heightForNumberOfLines(maximumNumberOfLines), maximumHeight) }
     
-    fileprivate var minHeight: CGFloat { return heightForNumberOfLines(minimumNumberOfLines) }
+    fileprivate var minHeight: CGFloat { return minimumHeight }
     
     // MARK: - Public Properties
     
@@ -93,20 +93,38 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     /// The maximum number of lines before enabling scrolling. The default value is `5`.
     @IBInspectable open var maximumNumberOfLines: Int = 5 {
         didSet {
-            if maximumNumberOfLines < minimumNumberOfLines {
-                maximumNumberOfLines = minimumNumberOfLines
+            if maximumNumberOfLines < 1 {
+                maximumNumberOfLines = 1
             }
             refreshHeightIfNeededAnimated(false)
         }
     }
     
     /// The minimum number of lines. The default value is `1`.
-    @IBInspectable open var minimumNumberOfLines: Int = 1 {
+    //    @IBInspectable open var minimumNumberOfLines: Int = 1 {
+    //        didSet {
+    //            if minimumNumberOfLines < 1 {
+    //                minimumNumberOfLines = 1
+    //            } else if minimumNumberOfLines > maximumNumberOfLines {
+    //                minimumNumberOfLines = maximumNumberOfLines
+    //            }
+    //            refreshHeightIfNeededAnimated(false)
+    //        }
+    //    }
+    
+    @IBInspectable open var maximumHeight: CGFloat = 72.0 {
         didSet {
-            if minimumNumberOfLines < 1 {
-                minimumNumberOfLines = 1
-            } else if minimumNumberOfLines > maximumNumberOfLines {
-                minimumNumberOfLines = maximumNumberOfLines
+            if maximumHeight < minimumHeight {
+                maximumHeight = minimumHeight
+            }
+            refreshHeightIfNeededAnimated(false)
+        }
+    }
+    
+    @IBInspectable open var minimumHeight: CGFloat = 32.0 {
+        didSet {
+            if minimumHeight > maximumHeight {
+                minimumHeight = maximumHeight
             }
             refreshHeightIfNeededAnimated(false)
         }
@@ -217,10 +235,10 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
                     options: [.allowUserInteraction, .beginFromCurrentState],
                     animations: { () -> Void in
                         heightChangeSetHeightBlock(oldHeight, newHeight)
-                    },
+                },
                     completion: { (finished: Bool) -> Void in
                         heightChangeCompletionBlock(oldHeight, newHeight)
-                    }
+                }
                 )
             } else {
                 heightChangeSetHeightBlock(oldHeight, newHeight)
