@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B80364291C29584400AC7807 /* RSKGrowingTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = B80364261C29584400AC7807 /* RSKGrowingTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		44DF5DD11F62DBF600F8564D /* RSKPlaceholderTextView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B80364311C29598D00AC7807 /* RSKPlaceholderTextView.framework */; };
 		B803642A1C29584400AC7807 /* RSKGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80364271C29584400AC7807 /* RSKGrowingTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B80364251C29584400AC7807 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B80364261C29584400AC7807 /* RSKGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKGrowingTextView.h; sourceTree = "<group>"; };
 		B80364271C29584400AC7807 /* RSKGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSKGrowingTextView.swift; sourceTree = "<group>"; };
 		B80364311C29598D00AC7807 /* RSKPlaceholderTextView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RSKPlaceholderTextView.framework; path = "DerivedData/RSKGrowingTextView/Build/Products/Debug-iphoneos/RSKPlaceholderTextView.framework"; sourceTree = "<group>"; };
 		B84FF8521C1E902200DCC2A6 /* RSKGrowingTextView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RSKGrowingTextView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +23,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44DF5DD11F62DBF600F8564D /* RSKPlaceholderTextView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,7 +33,6 @@
 		B80364241C29584400AC7807 /* RSKGrowingTextView */ = {
 			isa = PBXGroup;
 			children = (
-				B80364261C29584400AC7807 /* RSKGrowingTextView.h */,
 				B80364271C29584400AC7807 /* RSKGrowingTextView.swift */,
 				B80364251C29584400AC7807 /* Info.plist */,
 			);
@@ -72,7 +71,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B80364291C29584400AC7807 /* RSKGrowingTextView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
