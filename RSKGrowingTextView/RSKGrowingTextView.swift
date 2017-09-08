@@ -181,9 +181,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             if centerText {
                 var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
                 topCorrection = max(0, topCorrection)
-                textContainerInset = UIEdgeInsets(top: topCorrection, left: leftInset, bottom: 0, right: rightInset)
+                contentInset = UIEdgeInsets(top: topCorrection, left: leftInset, bottom: 0, right: rightInset)
             } else {
-                textContainerInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+                contentInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
             }
         }
     }
@@ -275,6 +275,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     fileprivate func scrollRectToVisibleConsideringInsets(_ rect: CGRect) {
         let insets = UIEdgeInsetsMake(contentInset.top + textContainerInset.top, contentInset.left + textContainerInset.left + textContainer.lineFragmentPadding, contentInset.bottom + textContainerInset.bottom, contentInset.right + textContainerInset.right)
+        print("insets \(insets)")
         let visibleRect = UIEdgeInsetsInsetRect(bounds, insets)
         
         guard !visibleRect.contains(rect) else {
