@@ -132,22 +132,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         }
     }
     
-    @IBInspectable public var bottomInset: CGFloat = 0 {
-        didSet { setNeedsDisplay() }
-    }
-    @IBInspectable public var leftInset: CGFloat = 0 {
-        didSet { setNeedsDisplay() }
-    }
-    @IBInspectable public var rightInset: CGFloat = 0 {
-        didSet { setNeedsDisplay() }
-    }
-    @IBInspectable public var topInset: CGFloat = 0 {
-        didSet { setNeedsDisplay() }
-    }
-    @IBInspectable public var centerText: Bool = true {
-        didSet { setNeedsDisplay() }
-    }
-    
     /// The current displayed number of lines. This value is calculated based on the height of text lines.
     open var numberOfLines: Int {
         guard let font = self.font else {
@@ -170,6 +154,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     override open var contentSize: CGSize {
         didSet {
+            
             guard window != nil && !oldValue.equalTo(contentSize) else {
                 return
             }
@@ -181,10 +166,12 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             if centerText {
                 var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
                 topCorrection = max(0, topCorrection)
-                contentInset = UIEdgeInsets(top: topCorrection, left: leftInset, bottom: 0, right: rightInset)
+                self.textContainerInset = UIEdgeInsetsMake(topCorrection, leftInset, 0, rightInset)
             } else {
-                contentInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+                self.textContainerInset = UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)
             }
+            
+            
         }
     }
     
@@ -423,6 +410,22 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         didSet { setNeedsDisplay() }
     }
     @IBInspectable open var placeHolderLeftMargin: CGFloat = 5 {
+        didSet { setNeedsDisplay() }
+    }
+    
+    @IBInspectable public var bottomInset: CGFloat = 0 {
+        didSet { setNeedsDisplay() }
+    }
+    @IBInspectable public var leftInset: CGFloat = 0 {
+        didSet { setNeedsDisplay() }
+    }
+    @IBInspectable public var rightInset: CGFloat = 0 {
+        didSet { setNeedsDisplay() }
+    }
+    @IBInspectable public var topInset: CGFloat = 0 {
+        didSet { setNeedsDisplay() }
+    }
+    @IBInspectable public var centerText: Bool = true {
         didSet { setNeedsDisplay() }
     }
     
