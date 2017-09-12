@@ -347,9 +347,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     /// The attributed string that is displayed when there is no other text in the placeholder text view. This value is `nil` by default.
     @NSCopying open var attributedPlaceholder: NSAttributedString? {
         didSet {
-            guard isEmpty == true else {
-                return
-            }
+//            guard isEmpty == true else {
+//                return
+//            }
             setNeedsDisplay()
         }
     }
