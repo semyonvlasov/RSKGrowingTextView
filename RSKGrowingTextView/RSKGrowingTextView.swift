@@ -189,7 +189,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        self.textContainerInset = UIEdgeInsetsMake(0, leftInset, 0, rightInset)
+        self.textContainerInset = UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)
     }
     
     override open var intrinsicContentSize: CGSize {
