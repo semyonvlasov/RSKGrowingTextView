@@ -347,9 +347,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     /// The attributed string that is displayed when there is no other text in the placeholder text view. This value is `nil` by default.
     @NSCopying open var attributedPlaceholder: NSAttributedString? {
         didSet {
-//            guard isEmpty == true else {
-//                return
-//            }
+            guard isEmpty == true else {
+                return
+            }
             setNeedsDisplay()
         }
     }
@@ -431,6 +431,19 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     }
     
     // MARK: - Superclass Properties
+    
+    open override var text: String! {
+        didSet {
+            self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
+            self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
+            self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
+            self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
+            self.layer.shadowOpacity = self.isActive ? 1.0 : 0
+            self.layer.cornerRadius = self.cornerRadius
+            self.tintColor = self.borderActiveColor
+            setNeedsDisplay()
+        }
+    }
     
     override open var attributedText: NSAttributedString! { didSet { setNeedsDisplay() } }
     
@@ -517,8 +530,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         
         let placeholderRect = UIEdgeInsetsInsetRect(rect, placeholderInsets)
         attributedPlaceholder.draw(in: placeholderRect)
-        
-        /// My changes
         
         self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
         self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
