@@ -154,7 +154,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     override open var contentSize: CGSize {
         didSet {
-            
             guard window != nil && !oldValue.equalTo(contentSize) else {
                 return
             }
@@ -163,15 +162,14 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             } else {
                 refreshHeightIfNeededAnimated(false)
             }
+            
             if centerText {
                 var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
                 topCorrection = max(0, topCorrection)
-                self.textContainerInset = UIEdgeInsetsMake(topCorrection, leftInset, 0, rightInset)
+                self.contentInset = UIEdgeInsetsMake(topCorrection, 0, 0, 0)
             } else {
-                self.textContainerInset = UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)
+                self.contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
             }
-            
-            
         }
     }
     
@@ -188,6 +186,11 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     }
     
     // MARK: - Layout
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        self.textContainerInset = UIEdgeInsetsMake(0, leftInset, 0, rightInset)
+    }
     
     override open var intrinsicContentSize: CGSize {
         if heightConstraint != nil {
@@ -209,7 +212,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
                 break
             }
         }
-        
         calculationLayoutManager.addTextContainer(calculationTextContainer)
     }
     
@@ -262,7 +264,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     fileprivate func scrollRectToVisibleConsideringInsets(_ rect: CGRect) {
         let insets = UIEdgeInsetsMake(contentInset.top + textContainerInset.top, contentInset.left + textContainerInset.left + textContainer.lineFragmentPadding, contentInset.bottom + textContainerInset.bottom, contentInset.right + textContainerInset.right)
-        print("insets \(insets)")
+        
         let visibleRect = UIEdgeInsetsInsetRect(bounds, insets)
         
         guard !visibleRect.contains(rect) else {
@@ -485,7 +487,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         guard text.isEmpty == true, let attributedPlaceholder = attributedPlaceholder else {
             return super.caretRect(for: position)
         }
-        
         if placeholderTextContainer.layoutManager == nil {
             placeholderLayoutManager.addTextContainer(placeholderTextContainer)
         }
