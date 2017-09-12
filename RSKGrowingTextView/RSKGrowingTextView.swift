@@ -204,7 +204,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     fileprivate func commonInitializer() {
         scrollsToTop = false
-        showsVerticalScrollIndicator = false
         
         for constraint in constraints {
             if constraint.firstAttribute == .height && constraint.relation == .equal {
@@ -537,6 +536,11 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidChangeNotification(_:)), name: NSNotification.Name.UITextViewTextDidChange, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidBeginEditingNotification(_:)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidEndEditingNotification(_:)), name: NSNotification.Name.UITextViewTextDidEndEditing, object: self)
+    }
+    
+    open func clearTextView() {
+        self.text = ""
+        setNeedsDisplay()
     }
     
     internal func handleTextViewTextDidChangeNotification(_ notification: Notification) {
