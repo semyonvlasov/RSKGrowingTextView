@@ -521,6 +521,14 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     override open func draw(_ rect: CGRect) {
         super.draw(rect)
         
+        self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
+        self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
+        self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
+        self.layer.shadowOpacity = self.isActive ? 1.0 : 0
+        self.layer.cornerRadius = self.cornerRadius
+        self.tintColor = self.borderActiveColor
+        
         guard isEmpty else {
             return
         }
@@ -530,14 +538,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         
         let placeholderRect = UIEdgeInsetsInsetRect(rect, placeholderInsets)
         attributedPlaceholder.draw(in: placeholderRect)
-        
-        self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
-        self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
-        self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
-        self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
-        self.layer.shadowOpacity = self.isActive ? 1.0 : 0
-        self.layer.cornerRadius = self.cornerRadius
-        self.tintColor = self.borderActiveColor
     }
     
     // MARK: - Helper Methods
