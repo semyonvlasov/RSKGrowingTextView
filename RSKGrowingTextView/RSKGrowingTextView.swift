@@ -521,6 +521,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     override open func draw(_ rect: CGRect) {
         super.draw(rect)
         
+        print("self is active - \(self.isActive)")
         self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
         self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
         self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
