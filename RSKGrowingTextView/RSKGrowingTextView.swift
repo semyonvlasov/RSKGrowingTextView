@@ -552,6 +552,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     open func clearTextView() {
         self.text = ""
         setNeedsDisplay()
+        if self.delegate != nil {
+            self.delegate?.textViewDidChange!(self)
+        }
     }
     
     internal func handleTextViewTextDidChangeNotification(_ notification: Notification) {
