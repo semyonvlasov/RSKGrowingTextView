@@ -93,7 +93,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     open var heightChangeUserActionsBlock: HeightChangeUserActionsBlockType?
     
     /// The maximum number of lines before enabling scrolling. The default value is `5`.
-    @IBInspectable open var maximumNumberOfLines: Int = 5 {
+    @IBInspectable open var maximumNumberOfLines: Int = 2 {
         didSet {
             if maximumNumberOfLines < 1 {
                 maximumNumberOfLines = 1
@@ -357,6 +357,10 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     /// Determines whether or not the placeholder text view contains text.
     open var isEmpty: Bool { return text.isEmpty }
     
+    // Maximum length of text. 0 means no limit.
+    
+    @IBInspectable open var maxLength: Int = 0
+    
     /// Trim white space and newline characters when end editing
     
     @IBInspectable open var trimWhiteSpaceWhenEndEditing: Bool = true
@@ -521,7 +525,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     override open func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        print("self is active - \(self.isActive)")
         self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
         self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
         self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
@@ -561,6 +564,11 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     internal func handleTextViewTextDidChangeNotification(_ notification: Notification) {
         guard let object = notification.object as? RSKPlaceholderTextView, object === self else {
             return
+        }
+        if maxLength > 0 && text.characters.count > maxLength {
+            let endIndex = text.index(text.startIndex, offsetBy: maxLength)
+            text = text.substring(to: endIndex)
+            undoManager?.removeAllActions()
         }
         setNeedsDisplay()
     }
