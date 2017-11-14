@@ -162,7 +162,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             } else {
                 refreshHeightIfNeededAnimated(false)
             }
-            
             if centerText {
                 var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
                 topCorrection = max(0, topCorrection)
@@ -225,7 +224,6 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     fileprivate func refreshHeightIfNeededAnimated(_ animated: Bool) {
         let oldHeight = bounds.height
         let newHeight = calculatedHeight
-        
         if oldHeight != newHeight {
             typealias HeightChangeSetHeightBlockType = ((_ oldHeight: CGFloat, _ newHeight: CGFloat) -> Void)
             let heightChangeSetHeightBlock: HeightChangeSetHeightBlockType = { (oldHeight: CGFloat, newHeight: CGFloat) -> Void in
@@ -396,6 +394,10 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         }
     }
     
+    @IBInspectable public var shadow: Bool = false {
+        didSet { setNeedsDisplay() }
+    }
+    
     @IBInspectable open var cornerRadius: CGFloat = 0 {
         didSet { setNeedsDisplay() }
     }
@@ -440,9 +442,11 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         didSet {
             self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
             self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
-            self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
-            self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
-            self.layer.shadowOpacity = self.isActive ? 1.0 : 0
+            if self.shadow {
+                self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
+                self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
+                self.layer.shadowOpacity = self.isActive ? 1.0 : 0
+            }
             self.layer.cornerRadius = self.cornerRadius
             self.tintColor = self.borderActiveColor
             setNeedsDisplay()
@@ -527,9 +531,11 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         
         self.layer.borderWidth = self.isActive ? self.borderWidthActive : self.borderWidth
         self.layer.borderColor = self.isActive ? self.borderActiveColor.cgColor : self.borderColor.cgColor
-        self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
-        self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
-        self.layer.shadowOpacity = self.isActive ? 1.0 : 0
+        if self.shadow {
+            self.layer.shadowColor = UIColor(red: 13/255.0, green: 21/255.0, blue: 38/255.0, alpha: 0.2).cgColor
+            self.layer.shadowOffset = CGSize(width: 0, height: self.isActive ? 5.0 : 0)
+            self.layer.shadowOpacity = self.isActive ? 1.0 : 0
+        }
         self.layer.cornerRadius = self.cornerRadius
         self.tintColor = self.borderActiveColor
         
