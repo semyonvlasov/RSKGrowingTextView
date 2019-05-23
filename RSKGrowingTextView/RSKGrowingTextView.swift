@@ -165,9 +165,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             if centerText {
                 var topCorrection = (bounds.size.height - contentSize.height * zoomScale) / 2.0
                 topCorrection = max(0, topCorrection)
-                self.contentInset = UIEdgeInsetsMake(topCorrection, 0, 0, 0)
+                self.contentInset = UIEdgeInsets(top: topCorrection, left: 0, bottom: 0, right: 0)
             } else {
-                self.contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
+                self.contentInset = UIEdgeInsets(top: topInset, left: 0, bottom: bottomInset, right: 0)
             }
         }
     }
@@ -188,14 +188,14 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        self.textContainerInset = UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)
+        self.textContainerInset = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
     }
     
     override open var intrinsicContentSize: CGSize {
         if heightConstraint != nil {
-            return CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
+            return CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
         } else {
-            return CGSize(width: UIViewNoIntrinsicMetric, height: calculatedHeight)
+            return CGSize(width: UIView.noIntrinsicMetric, height: calculatedHeight)
         }
     }
     
@@ -260,9 +260,14 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     }
     
     fileprivate func scrollRectToVisibleConsideringInsets(_ rect: CGRect) {
-        let insets = UIEdgeInsetsMake(contentInset.top + textContainerInset.top, contentInset.left + textContainerInset.left + textContainer.lineFragmentPadding, contentInset.bottom + textContainerInset.bottom, contentInset.right + textContainerInset.right)
+        let insets = UIEdgeInsets(
+            top: contentInset.top + textContainerInset.top,
+            left: contentInset.left + textContainerInset.left + textContainer.lineFragmentPadding,
+            bottom: contentInset.bottom + textContainerInset.bottom,
+            right: contentInset.right + textContainerInset.right
+        )
         
-        let visibleRect = UIEdgeInsetsInsetRect(bounds, insets)
+        let visibleRect = bounds.inset(by: insets)
         
         guard !visibleRect.contains(rect) else {
             return
@@ -305,23 +310,23 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     // MARK: - Private Properties
     
-    private var placeholderAttributes: [String: Any] {
+    private var placeholderAttributes: [NSAttributedString.Key: Any] {
         var placeholderAttributes = typingAttributes
-        if placeholderAttributes[NSFontAttributeName] == nil {
-            placeholderAttributes[NSFontAttributeName] = typingAttributes[NSFontAttributeName] ?? font ?? UIFont.systemFont(ofSize: UIFont.systemFontSize)
+        if placeholderAttributes[NSAttributedString.Key.font] == nil {
+            placeholderAttributes[NSAttributedString.Key.font] = typingAttributes[NSAttributedString.Key.font] ?? font ?? UIFont.systemFont(ofSize: UIFont.systemFontSize)
         }
-        if placeholderAttributes[NSParagraphStyleAttributeName] == nil {
-            let typingParagraphStyle = typingAttributes[NSParagraphStyleAttributeName]
+        if placeholderAttributes[NSAttributedString.Key.paragraphStyle] == nil {
+            let typingParagraphStyle = typingAttributes[NSAttributedString.Key.paragraphStyle]
             if typingParagraphStyle == nil {
                 let paragraphStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
                 paragraphStyle.alignment = textAlignment
                 paragraphStyle.lineBreakMode = textContainer.lineBreakMode
-                placeholderAttributes[NSParagraphStyleAttributeName] = paragraphStyle
+                placeholderAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
             } else {
-                placeholderAttributes[NSParagraphStyleAttributeName] = typingParagraphStyle
+                placeholderAttributes[NSAttributedString.Key.paragraphStyle] = typingParagraphStyle
             }
         }
-        placeholderAttributes[NSForegroundColorAttributeName] = self.isActive ? placeholderActiveColor : placeholderDefaultColor
+        placeholderAttributes[NSAttributedString.Key.foregroundColor] = self.isActive ? placeholderActiveColor : placeholderDefaultColor
         
         return placeholderAttributes
     }
@@ -477,7 +482,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     override open var textContainerInset: UIEdgeInsets { didSet { setNeedsDisplay() } }
     
-    override open var typingAttributes: [String : Any] {
+    override open var typingAttributes: [NSAttributedString.Key : Any] {
         didSet {
             if let placeholder = placeholder as String? {
                 attributedPlaceholder = NSAttributedString(string: placeholder, attributes: placeholderAttributes)
@@ -488,7 +493,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     // MARK: - Object Lifecycle
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: self)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: self)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -546,7 +551,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
             return
         }
         
-        let placeholderRect = UIEdgeInsetsInsetRect(rect, placeholderInsets)
+        let placeholderRect = rect.inset(by: placeholderInsets)
         attributedPlaceholder.draw(in: placeholderRect)
     }
     
@@ -554,9 +559,9 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
     
     private func commonInitializer() {
         contentMode = .topLeft
-        NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidChangeNotification(_:)), name: NSNotification.Name.UITextViewTextDidChange, object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidBeginEditingNotification(_:)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidEndEditingNotification(_:)), name: NSNotification.Name.UITextViewTextDidEndEditing, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidChangeNotification(_:)), name: UITextView.textDidChangeNotification, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidBeginEditingNotification(_:)), name: UITextView.textDidBeginEditingNotification, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(RSKPlaceholderTextView.handleTextViewTextDidEndEditingNotification(_:)), name: UITextView.textDidEndEditingNotification, object: self)
     }
     
     open func clearTextView() {
@@ -567,11 +572,11 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         }
     }
     
-    internal func handleTextViewTextDidChangeNotification(_ notification: Notification) {
+    @objc internal func handleTextViewTextDidChangeNotification(_ notification: Notification) {
         guard let object = notification.object as? RSKPlaceholderTextView, object === self else {
             return
         }
-        if maxLength > 0 && text.characters.count > maxLength {
+        if maxLength > 0 && text.count > maxLength {
             let endIndex = text.index(text.startIndex, offsetBy: maxLength)
             text = text.substring(to: endIndex)
             undoManager?.removeAllActions()
@@ -579,7 +584,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         setNeedsDisplay()
     }
     
-    internal func handleTextViewTextDidBeginEditingNotification(_ notification: Notification) {
+    @objc internal func handleTextViewTextDidBeginEditingNotification(_ notification: Notification) {
         guard let object = notification.object as? RSKPlaceholderTextView, object === self else {
             return
         }
@@ -587,7 +592,7 @@ public typealias HeightChangeUserActionsBlockType = ((_ oldHeight: CGFloat, _ ne
         setNeedsDisplay()
     }
     
-    internal func handleTextViewTextDidEndEditingNotification(_ notification: Notification) {
+    @objc internal func handleTextViewTextDidEndEditingNotification(_ notification: Notification) {
         guard let object = notification.object as? RSKPlaceholderTextView, object === self else {
             return
         }
